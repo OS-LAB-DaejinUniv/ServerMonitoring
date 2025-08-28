@@ -56,20 +56,24 @@ def check_thresholds_and_alert():
     """
     print(f"[{time.strftime('%H:%M:%S')}] Checking Threshold..")
     usage = get_current_resource_usage()
+    print(f"현재 사용량- CPU:{usage['cpu']}\n Memory:{usage['memory']}\n Disk:{usage['disk']}")
     
     # Check CPU
     if usage['cpu'] >= CPU_THRESHOLD and not alert_sent_status['cpu']:
+        print(f"CPU 임계치 초과! ({usage['cpu']:.2f}% >= {CPU_THRESHOLD}%) 알림 상태를 True로 변경합니다.")
         send_notification(f"CPU 사용률이 {usage['cpu']}&로 임게치({CPU_THRESHOLD})%를 초과했습니다!",
                           level="warning")
         alert_sent_status['cpu'] = True
     # Check Memory
     if usage['memory'] >= MEMORY_THRESHOLD and not alert_sent_status['memory']:
+        print(f"Memory 임계치 초과! ({usage['memory']:.2f}% >= {MEMORY_THRESHOLD}%) 알림 상태를 True로 변경합니다.")
         send_notification(f"메모리 사용률이 {usage['memory']}%로 임계치({MEMORY_THRESHOLD}%)를 초과했습니다!", 
                           level="warning")
         alert_sent_status['memory'] = True
         
     # Check Disk
     if usage['disk'] >= DISK_THRESHOLD and not alert_sent_status['disk']:
+        print(f"Disk 임계치 초과 ('{DISK_PARTITION_PATH}' {usage['disk']:.2f}% >= {DISK_THRESHOLD}%) 알림 상태를 True로 변경합니다.")
         send_notification(f"'{DISK_PARTITION_PATH}' 디스크 사용률이 {usage['disk']}%로 임계치({DISK_THRESHOLD}%)를 초과했습니다!", 
                           level="warning")
         alert_sent_status['disk'] = True
